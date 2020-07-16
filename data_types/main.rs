@@ -32,12 +32,64 @@
 /*
  * 浮点类型分两种 f32 和 f64 默认类型 f64 
  * 
- * 
- * 
- * 
- * 
+ */
+
+// boolean
+let t = true;
+let f: bool = false; // with explicit type annotation
+
+
+// char
+/*
+ * char类型使用单引号声明，和字符串是有区别的 
  * 
  */
+let c = 'z';
+let z = 'ℤ';
+let heart_eyed_cat = '😻';
+
+
+// + - * / %
+
+// addition
+let sum = 5 + 10;
+// subtraction
+let difference = 95.5 - 4.3;
+// multiplication
+let product = 4 * 30;
+// division
+let quotient = 56.7 / 32.2;
+// remainder
+let remainder = 43 % 5;
 
 
 // compound types
+
+// tuple
+
+let tup: (i32, f64, u8) = (500, 6.4, 1); // 带类型注解的元组声明, 类型注解是可选的
+
+let anotherTup = (500, 6.4, 1); 
+let (x, y, z) = anotherTup; // 解构赋值
+println!("The value of y is {}", y);
+
+let five_hundred = tup.0; // 使用.和下标来访问元组内的值
+
+
+// array
+
+let a = [1, 2, 3, 4, 5] // 要注意的是，rust中的数组虽然不用声明长度再赋值，但是赋值以后长度就不可以再变化
+let arr: [i32; 5] = [1, 2, 3, 4, 5]; // 通过:[type; length]这种写法规定类型和长度
+let anotherArr = [3; 5]; // 这种写法看起来和上面很像，但是有一些不同，前面是初始化的值，后面是长度，也就是用5个3来初始化数组。
+let firstElementInArr = anotherArr[0]; // 访问数组中的值
+/*
+ * rust会对提供的访问数组的下标进行检查，如果超出范围就会立即退出
+ *
+ */
+
+
+
+// vector
+// ...to be continued
+
+
