@@ -151,6 +151,15 @@ fn main () {
 
 }
 
+// 可变和不可变引用混用，你肯定不希望读取的一个值突然变化了对不对
+let mut s = String::from("hello");
+
+let r1 = &s; // no problem
+let r2 = &s; // no problem
+let r3 = &mut s; // BIG PROBLEM
+
+println!("{}, {}, and {}", r1, r2, r3);
+
 // 你可以这样做，只要保证不会同时访问并且修改
 
 fn main () {
@@ -162,3 +171,36 @@ fn main () {
 
     let r2 = &mut s;
 }
+
+// 引用的周期是从引入到最后一次使用，所以下面的代码是完全可以的
+let mut s = String::from("hello");
+
+let r1 = &s; // no problem
+let r2 = &s; // no problem
+println!("{} and {}", r1, r2);
+// r1 and r2 are no longer used after this point
+
+let r3 = &mut s; // no problem
+println!("{}", r3);
+
+// 所以说我们要么只用一个可变指针，要么使用多个不可变指针
+// rust这种特点有时会显得让人很烦恼，但正是这样的机制为你指出了潜在的问题。
+
+
+// Dangling References 
+fn main () {
+    let reference_to_nothing = dangle();
+}
+
+fn dangle () -> &String {
+            //  ^ this function's return type contains a borrowed value, but there is no value for it to be borrowed from.
+    let s = String::from("hello");
+    
+    &s
+} // 这个函数实际上返回的是指向s的引用，按照我们之前的理解，这里s已经被丢弃，内存也就不再保留
+fn dangle () -> String {
+    let s = String::from("hello");
+
+    s
+}
+// 通过上面试图创建空指针的代码演示，我们可以知道rust结合自己的作用域和内存回收机制，保证不会出现悬空指针

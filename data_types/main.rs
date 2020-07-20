@@ -111,3 +111,130 @@ let firstElementInArr = anotherArr[0]; // 访问数组中的值
  * rust则会在变量超出作用域以后自动执行drop函数回收这部分内存
  */
 
+
+ 
+// string slice （切片保存的是切点索引和长度）
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();                     // convert string to array
+    for (i, &item) in bytes.iter().enumerate() {  // iter the array of bytes
+        if item == b' ' {
+            return i;
+        }
+    }
+    s.len()
+} // 这是一段获取字符串第一个词结尾index的函数
+fn main() {
+    let mut s = String::from("hello world");
+
+    let word = first_word(&s); // word will get the value 5
+
+    s.clear(); // this empties the String, making it equal to ""
+} // 如果在获取到index以后清除了原来字符串的内容，先前的index就没有意义了
+
+
+fn main () {
+    let s = String::from("hello");
+
+    let slice = &s[0..2]; // let slice = &s[..2];
+    
+    let len = s.len();
+    let slice2 = &s[3..len]; // let slice2 = &s[3..];
+
+    let slice3 = &s[0..len]; // let slice3 = &s[..];
+}
+
+
+// 所以有了slice，我们可以重写上面的函数
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+// 字符串常量本身也是字符切片
+fn main() {
+    let my_string = String::from("hello world");
+
+    // first_word works on slices of `String`s
+    let word = first_word(&my_string[..]);
+
+    let my_string_literal = "hello world";
+
+    // first_word works on slices of string literals
+    let word = first_word(&my_string_literal[..]);
+
+    // Because string literals *are* string slices already,
+    // this works too, without the slice syntax!
+    let word = first_word(my_string_literal);
+}
+
+
+// array也是可以适用slice的
+let a = [1, 2, 3, 4, 5];
+let slice = &a[1..3]; // type: &[i32]
+
+
+// struct
+// define
+struct User {
+    username: String,  // not &str
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+// create instance
+let user1 = User {
+    email: String::from("some@example.com"),
+    username: String::from("someone123"),
+    active: true,
+    sign_in_count: 1,
+} 
+// change instance field
+user1.email = String::from("another@email.com");
+// function return struct
+// this looks tedious
+fn build_user(email: String, username: String) -> User {
+    User {
+        email: email,
+        username: username,
+        active: true,
+        sign_in_count: 1,
+    }
+}
+// much better
+fn build_user(email: String, username: String) -> User {
+    User {
+        email,
+        username,
+        active: true,
+        sign_in_count: 1,
+    }
+}
+
+// create instance 
+let user2 = User {
+    email: String::from("another@example.com"),
+    username: String::from("anotherusername567"),
+    ..user1 // 就像js展开运算符一样，但是要注意的是仅使用没有写出的部分
+};
+
+// tuple struct
+// define
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
+// use
+let black = Color(0, 0, 0);
+let origin = Point(0, 0, 0);
+
+
+// unit-like struct that don't have any fields can be useful in situations in which you need to 
+// implement a trait on some type but don't have any data that you want to store in the type in the type itself
+
+// example 
+// see the folder rectangle
+
