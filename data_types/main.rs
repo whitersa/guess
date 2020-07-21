@@ -238,3 +238,105 @@ let origin = Point(0, 0, 0);
 // example 
 // see the folder rectangle
 
+
+// enum
+enum IpAddrKind {
+    V4,
+    V6,
+}
+
+let four = IpAddrKind::V4;
+let six = IpAddrKind::V6;
+
+fn route (ip_kind: IpAddrKind) {
+
+}
+
+route(IpAddrKind::V4);
+route(IpAddrKind::V6);
+
+// example 1
+enum IpAddrKind {
+    V4,
+    V6,
+}
+struct IpAddr {
+    kind: IpAddrKind,
+    address: String,
+}
+let home = IpAddr {
+    kind: IpAddrKind::V4,
+    address:: String::from("127.0.0.1"),
+};
+let loopback = IpAddr {
+    kind: IpAddrKind::V6,
+    address: String::from("::1"),
+}
+// more concise way
+enum IpAddr {
+    V4(String),
+    V6(String),
+} // directly attachdata to the variant of enum, no struct needed
+let home = IpAddr::V4(String::from("127.0.0.1"));
+let loopback = IpAddr::V6(String::from("::1"));
+
+enum IpAddr {
+    V4(u8, u8, u8, u8),
+    V6(String),
+} // another advantage is more flexible
+
+let home = IpAddr::V4(127, 0, 0, 1);
+
+let loopback = IpAddr::V6(String::from("::1"));
+
+// ip address code in standard library 
+struct Ipv4Addr {
+    // --snip--
+}
+
+struct Ipv6Addr {
+    // --snip--
+}
+
+enum IpAddr {
+    V4(Ipv4Addr),
+    V6(Ipv6Addr),
+}
+
+
+// example 2
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+// enum can also define methods
+impl Message {
+    fn call (&self) {
+
+    }
+}
+let m = Message::Write(String::from("hello"));
+m.call();
+
+// example 3 Option code in the standard library
+
+
+// I call it my billion-dollar mistake. At that time, I was designing the first 
+// comprehensive type system for references in an object-oriented language. My goal 
+// was to ensure that all use of references should be absolutely safe, with checking 
+// performed automatically by the compiler. But I couldn’t resist the temptation to 
+// put in a null reference, simply because it was so easy to implement. This has led 
+// to innumerable errors, vulnerabilities, and system crashes, which have probably 
+// caused a billion dollars of pain and damage in the last forty years.
+
+// ^ - why rust doesn't have the null feature. 简单来说就是一句【null是一块砖，哪里需要哪里搬】，因此导致滥用。
+// 因此rust在标准库中实现了Option，主要意图还是让你在写代码时多思考一下这个值到底应该怎么处理，减少类似滥用null的行为
+enum Option<T> {
+    Some(T),
+    None,
+}
+let some_number = Some(5);
+let some_string = Some("a string");
+let absent_number: Option<i32> = None;
