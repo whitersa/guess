@@ -87,12 +87,6 @@ let firstElementInArr = anotherArr[0]; // 访问数组中的值
  *
  */
 
-
-
-// vector
-// ...to be continued
-
-
 // string
 {
     let mut s = String::from("hello"); // ①
@@ -340,3 +334,7 @@ enum Option<T> {
 let some_number = Some(5);
 let some_string = Some("a string");
 let absent_number: Option<i32> = None;
+
+
+// vector
+// see the collections folder
