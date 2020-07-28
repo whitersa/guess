@@ -134,3 +134,23 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 
 // 总体来说，对于可能出现错误的程序，默认返回Result是一个不错的选择
+
+
+
+// 自定义检验类型
+pub struct Guess {
+    value: i32,
+}
+impl Guess {
+    pub fn new (value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {}, ", value);
+        }
+        Guess { value }
+    }
+
+    // getter
+    pub fn value (&self) -> i32 {
+        self.value
+    }
+}
